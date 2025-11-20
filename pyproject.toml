@@ -9,7 +9,7 @@ description = "Binary classifier distinguishing real photographs from AI-generat
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.12"
-authors = [{ name = "distinguish", email = "edwardy.liu@mail.utoronto.ca" }]
+authors = [{ name = "edwardyliu", email = "edwardy.liu@mail.utoronto.ca" }]
 dependencies = [
 	"torch",
 	"torchvision",

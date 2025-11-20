@@ -56,7 +56,10 @@ def write_metrics_csv(
             writer.writerow(row)
 
 
-def compute_binary_metrics(preds, targets) -> Dict[str, float]:
+def compute_binary_metrics(
+    preds: torch.Tensor,
+    targets: torch.Tensor,
+) -> Dict[str, float]:
     """Compute accuracy, precision, recall, F1 for binary predictions.
 
     Parameters

@@ -37,6 +37,11 @@ class Classifier:
         Device to run inference on. Auto-selected if not provided.
     backbone: str
         Backbone architecture used during training.
+    
+    Examples
+    --------
+    >>> classifier = Classifier("model.pt")
+    >>> results = classifier.predict(["img1.jpg", "img2.jpg"])
     """
 
     def __init__(
@@ -53,27 +58,51 @@ class Classifier:
         self.model.to(self.device)
         self.model.eval()
 
+    def __enter__(self):
+        """Context manager entry."""
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Context manager exit with cleanup."""
+        if hasattr(self, 'model') and self.model is not None:
+            del self.model
+        if hasattr(self, 'device') and self.device.type == 'cuda':
+            torch.cuda.empty_cache()
+        return False
+
     def predict(self, images: List[str]) -> List[Dict[str, Any]]:
-        """Predict labels for a list of image file paths."""
+        """Predict labels for a list of image file paths.
+        
+        Raises
+        ------
+        ValueError
+            If no valid images are provided.
+        """
         results = []
         with torch.no_grad():
             for path in images:
                 if not os.path.isfile(path):
                     logger.warning("Skipping missing file: %s", path)
                     continue
-                with Image.open(path) as img:
-                    img = img.convert("RGB")
-                    tensor = PRED_TRANSFORM(img).unsqueeze(0).to(self.device)
-                    logit = self.model(tensor).view(-1)[0]
-                    prob = torch.sigmoid(logit).item()
-                    label = 1 if prob >= 0.5 else 0
-                    results.append(
-                        {
-                            "path": path,
-                            "label": LABEL_NAMES[label],
-                            "score": prob,
-                        }
-                    )
+                try:
+                    with Image.open(path) as img:
+                        img = img.convert("RGB")
+                        tensor = PRED_TRANSFORM(img).unsqueeze(0).to(self.device)
+                        logit = self.model(tensor).view(-1)[0]
+                        prob = torch.sigmoid(logit).item()
+                        label = 1 if prob >= 0.5 else 0
+                        results.append(
+                            {
+                                "path": path,
+                                "label": LABEL_NAMES[label],
+                                "score": prob,
+                            }
+                        )
+                except (IOError, OSError) as e:
+                    logger.warning("Error loading image %s: %s", path, e)
+                    continue
+        if not results:
+            raise ValueError("No valid images could be processed")
         return results
 
 

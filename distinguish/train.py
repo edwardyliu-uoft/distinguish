@@ -38,6 +38,19 @@ class TrainerConfig:
     grad_clip: Optional[float] = None
     seed: int = 42
 
+    def __post_init__(self) -> None:
+        """Validate configuration parameters."""
+        if self.lr <= 0:
+            raise ValueError(f"Learning rate must be positive, got {self.lr}")
+        if self.batch_size <= 0:
+            raise ValueError(f"Batch size must be positive, got {self.batch_size}")
+        if self.epochs <= 0:
+            raise ValueError(f"Epochs must be positive, got {self.epochs}")
+        if self.weight_decay < 0:
+            raise ValueError(f"Weight decay must be non-negative, got {self.weight_decay}")
+        if self.grad_clip is not None and self.grad_clip <= 0:
+            raise ValueError(f"Gradient clip must be positive, got {self.grad_clip}")
+
 
 class Trainer:
     """Encapsulates training and evaluation loops.
@@ -159,9 +172,10 @@ class Trainer:
                     )
                 self.scaler.step(self.optimizer)
                 self.scaler.update()
-                epoch_loss += loss.item() * images.size(0)
+                epoch_loss += loss.detach().item() * images.size(0)
                 preds_all.append(logits.detach().cpu())
                 targets_all.append(labels.detach().cpu())
+                pbar.set_postfix({"loss": f"{loss.item():.4f}"})
             train_logits = torch.cat(preds_all)
             train_targets = torch.cat(targets_all)
             train_metrics = compute_binary_metrics(train_logits, train_targets)
