@@ -7,9 +7,8 @@ Provides commands:
 """
 
 from __future__ import annotations
-import json
 import logging
-from typing import List
+import json
 import click
 
 from .predict import Classifier, save_predictions_json
@@ -23,7 +22,7 @@ __version__ = "0.1.0"
 @click.group()
 @click.version_option(version=__version__)
 def cli():
-    """Binary classifier distinguishing real vs AI-generated face images."""
+    """Binary classifier distinguishing real photographs from AI-generated images."""
 
 
 @cli.command()
@@ -36,7 +35,7 @@ def cli():
 )
 @click.argument("images", nargs=-1, required=True)
 def classify(weights: str, out: str | None, backbone: str, images: tuple) -> None:
-    """Classify face images as real or AI-generated."""
+    """Classify images as real photographs or AI-generated."""
     classifier = Classifier(weights, backbone=backbone)
     results = classifier.predict(list(images))
     logger.info(json.dumps(results, indent=2))
@@ -45,9 +44,9 @@ def classify(weights: str, out: str | None, backbone: str, images: tuple) -> Non
         logger.info("Wrote predictions: %s", out)
 
 
-def main(argv: List[str] | None = None) -> None:
+def main() -> None:
     """Entry point for CLI."""
-    cli(args=argv or [])
+    cli()
 
 
 if __name__ == "__main__":  # pragma: no cover

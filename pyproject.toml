@@ -9,7 +9,7 @@ description = "Binary classifier distinguishing real vs AI-generated face images
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.12,<3.13"
-authors = [{ name = "distinguish", email = "example@example.com" }]
+authors = [{ name = "distinguish", email = "edwardy.liu@mail.utoronto.ca" }]
 dependencies = [
 	"torch",
 	"torchvision",
@@ -34,16 +34,10 @@ classifiers = [
 	"Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
-[project.urls]
-Homepage = "https://example.com/distinguish"
-Source = "https://example.com/distinguish/source"
-Changelog = "https://example.com/distinguish/changelog"
-
 [project.optional-dependencies]
 test = ["pytest"]
 dev = ["distinguish[test]", "pylint"]
 ipynb = ["matplotlib", "seaborn", "ipykernel", "jupyter", "scikit-learn"]
-
 
 [project.scripts]
 distinguish = "distinguish.cli:main"
