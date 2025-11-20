@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Binary classifier distinguishing real photographs from AI-generated images"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.12,<=3.13"
+requires-python = ">=3.12"
 authors = [{ name = "distinguish", email = "edwardy.liu@mail.utoronto.ca" }]
 dependencies = [
 	"torch",
