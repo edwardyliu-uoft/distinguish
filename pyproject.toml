@@ -5,10 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "distinguish"
 version = "0.1.0"
-description = "Binary classifier distinguishing real vs AI-generated face images"
+description = "Binary classifier distinguishing real photographs from AI-generated images"
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.12,<=3.13"
 authors = [{ name = "distinguish", email = "edwardy.liu@mail.utoronto.ca" }]
 dependencies = [
 	"torch",
@@ -21,7 +21,7 @@ dependencies = [
 ]
 keywords = [
 	"deep-learning",
-	"faces",
+	"image",
 	"classification",
 	"pytorch",
 	"ai-generated",
