@@ -1,7 +1,6 @@
 """distinguish package
 
-Binary classifier to distinguish between real camera photographs of human faces
-and AI-generated (synthetic) faces.
+Binary classifier to distinguish between real photographs versus AI-generated (synthetic) images.
 
 Public API:
     build_model, DistinguishDataset, Trainer, Classifier,

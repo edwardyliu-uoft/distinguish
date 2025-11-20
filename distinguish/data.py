@@ -28,7 +28,7 @@ DEFAULT_IMAGE_SIZE = 224
 
 
 def default_transforms(train: bool = True) -> transforms.Compose:
-    """Return default torchvision transforms for faces.
+    """Return default torchvision transforms.
 
     Parameters
     ----------

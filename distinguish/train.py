@@ -117,7 +117,9 @@ class Trainer:
         logger.info("Resumed from checkpoint %s at epoch %s", path, self.start_epoch)
 
     def train(
-        self, train_loader: DataLoader, val_loader: Optional[DataLoader] = None
+        self,
+        train_loader: DataLoader,
+        val_loader: Optional[DataLoader] = None,
     ) -> Dict[str, Any]:
         """Train the model.
 
@@ -174,7 +176,8 @@ class Trainer:
                     best_path = os.path.join(self.config.out_dir, "best_model.pt")
                     torch.save(self.model.state_dict(), best_path)
                     logger.info(
-                        "New best model saved (accuracy=%.4f)", metric_to_compare
+                        "New best model saved (accuracy=%.4f)",
+                        metric_to_compare,
                     )
                     self._save_checkpoint(epoch, metric_to_compare)
 
