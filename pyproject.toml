@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "distinguish"
+version = "0.1.0"
+description = "Binary classifier distinguishing real vs AI-generated face images"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.12,<3.13"
+authors = [{ name = "distinguish", email = "example@example.com" }]
+dependencies = [
+	"torch",
+	"torchvision",
+	"pillow",
+	"numpy",
+	"tqdm",
+	"pandas",
+	"click",
+]
+keywords = [
+	"deep-learning",
+	"faces",
+	"classification",
+	"pytorch",
+	"ai-generated",
+]
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"License :: OSI Approved :: MIT License",
+	"Intended Audience :: Developers",
+	"Intended Audience :: Science/Research",
+	"Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Homepage = "https://example.com/distinguish"
+Source = "https://example.com/distinguish/source"
+Changelog = "https://example.com/distinguish/changelog"
+
+[project.optional-dependencies]
+test = ["pytest"]
+dev = ["distinguish[test]", "pylint"]
+ipynb = ["matplotlib", "seaborn", "ipykernel", "jupyter", "scikit-learn"]
+
+
+[project.scripts]
+distinguish = "distinguish.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["distinguish*"]
