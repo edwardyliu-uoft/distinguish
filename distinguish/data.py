@@ -100,8 +100,13 @@ class DistinguishDataset(Dataset):
 
     def __getitem__(self, idx: int):  # type: ignore[override]
         path, label = self.samples[idx]
-        with Image.open(path) as img:
-            img = img.convert("RGB")
-            if self.transform:
-                img = self.transform(img)
-        return img, torch.tensor(label, dtype=torch.float32)
+        try:
+            with Image.open(path) as img:
+                img = img.convert("RGB")
+                if self.transform:
+                    img = self.transform(img)
+            return img, torch.tensor(label, dtype=torch.float32)
+        except (OSError, IOError) as e:
+            # Skip corrupted/truncated images by returning next valid image
+            print(f"Warning: Skipping corrupted image: {path} ({e})")
+            return self.__getitem__((idx + 1) % len(self))
