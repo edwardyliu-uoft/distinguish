@@ -4,7 +4,7 @@ from __future__ import annotations
 import os
 import json
 import logging
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from PIL import Image
 import torch
 from torchvision import transforms
@@ -23,8 +23,6 @@ PRED_TRANSFORM = transforms.Compose(
     ]
 )
 
-LABEL_NAMES = {0: "real", 1: "ai_generated"}
-
 
 class Classifier:
     """Convenience wrapper for loading a trained model and performing inference.
@@ -37,7 +35,7 @@ class Classifier:
         Device to run inference on. Auto-selected if not provided.
     backbone: str
         Backbone architecture used during training.
-    
+
     Examples
     --------
     >>> classifier = Classifier("model.pt")
@@ -64,20 +62,25 @@ class Classifier:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Context manager exit with cleanup."""
-        if hasattr(self, 'model') and self.model is not None:
+        if hasattr(self, "model") and self.model is not None:
             del self.model
-        if hasattr(self, 'device') and self.device.type == 'cuda':
+        if hasattr(self, "device") and self.device.type == "cuda":
             torch.cuda.empty_cache()
         return False
 
-    def predict(self, images: List[str]) -> List[Dict[str, Any]]:
+    def predict(
+        self,
+        images: List[str],
+        labelmap: Optional[Dict[str, int]] = None,
+    ) -> List[Dict[str, Any]]:
         """Predict labels for a list of image file paths.
-        
+
         Raises
         ------
         ValueError
             If no valid images are provided.
         """
+        labelmap = labelmap or {0: "real", 1: "ai_generated"}
         results = []
         with torch.no_grad():
             for path in images:
@@ -94,7 +97,7 @@ class Classifier:
                         results.append(
                             {
                                 "path": path,
-                                "label": LABEL_NAMES[label],
+                                "label": labelmap[label],
                                 "score": prob,
                             }
                         )
