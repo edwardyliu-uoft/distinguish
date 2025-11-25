@@ -16,13 +16,11 @@ and 1 for AI-generated (fake).
 
 from __future__ import annotations
 import os
-from typing import List, Tuple, Optional, Callable
+from typing import Dict, List, Tuple, Optional, Callable
 from PIL import Image
 import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
-
-LABEL_MAP = {"real": 0, "fake": 1, "ai_generated": 1}
 
 DEFAULT_IMAGE_SIZE = 224
 
@@ -76,14 +74,16 @@ class DistinguishDataset(Dataset):
         root: str,
         transform: Optional[Callable] = None,
         extensions: Optional[List[str]] = None,
+        labelmap: Optional[Dict[str, int]] = None,
     ) -> None:
         self.root = root
         self.transform = transform or default_transforms(train=True)
         self.extensions = extensions or [".jpg", ".jpeg", ".png", ".bmp"]
+        self.labelmap = labelmap or {"real": 0, "fake": 1, "ai_generated": 1}
         if not os.path.isdir(root):
             raise FileNotFoundError(f"Dataset root not found: {root}")
         self.samples: List[Tuple[str, int]] = []
-        for class_name, label in LABEL_MAP.items():
+        for class_name, label in self.labelmap.items():
             class_dir = os.path.join(root, class_name)
             if not os.path.isdir(class_dir):
                 continue
