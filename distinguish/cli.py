@@ -55,7 +55,6 @@ def classify(weights: str, out: str | None, backbone: str, images: tuple) -> Non
             # Find all image files in directory
             for ext in image_extensions:
                 image_paths.extend([str(p) for p in path.glob(f"*{ext}")])
-                image_paths.extend([str(p) for p in path.glob(f"*{ext.upper()}")])
         else:
             logger.warning("Path not found or not accessible: %s", path_str)
 
