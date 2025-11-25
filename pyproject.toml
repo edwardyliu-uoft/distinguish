@@ -11,13 +11,13 @@ license = { file = "LICENSE" }
 requires-python = ">=3.12"
 authors = [{ name = "edwardyliu", email = "edwardy.liu@mail.utoronto.ca" }]
 dependencies = [
-	"torch",
-	"torchvision",
-	"pillow",
-	"numpy",
-	"tqdm",
-	"pandas",
-	"click",
+	"torch==2.9.1",
+	"torchvision==0.24.1",
+	"pillow==12.0.0",
+	"numpy==2.3.5",
+	"tqdm==4.67.1",
+	"pandas==2.3.3",
+	"click==8.3.1",
 ]
 keywords = [
 	"deep-learning",
@@ -35,9 +35,15 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest"]
-dev = ["distinguish[test]", "pylint"]
-ipynb = ["matplotlib", "seaborn", "ipykernel", "jupyter", "scikit-learn"]
+test = ["pytest==9.0.1"]
+dev = ["distinguish[test]", "pylint==4.0.3"]
+ipynb = [
+	"matplotlib==3.10.7",
+	"seaborn==0.13.2",
+	"ipykernel==7.1.0",
+	"jupyter==1.1.1",
+	"scikit-learn==1.7.2",
+]
 
 [project.scripts]
 distinguish = "distinguish.cli:main"
