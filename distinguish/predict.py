@@ -71,7 +71,7 @@ class Classifier:
     def predict(
         self,
         images: List[str],
-        labelmap: Optional[Dict[str, int]] = None,
+        labelmap: Optional[Dict[int, str]] = None,
     ) -> List[Dict[str, Any]]:
         """Predict labels for a list of image file paths.
 

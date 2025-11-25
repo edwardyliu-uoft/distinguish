@@ -47,7 +47,7 @@ def classify(weights: str, out: str | None, backbone: str, images: tuple) -> Non
     image_paths = []
 
     for path_str in images:
-        path = Path(path_str)
+        path = Path(path_str).resolve()
         if path.is_file():
             # Add file directly
             image_paths.append(str(path))
